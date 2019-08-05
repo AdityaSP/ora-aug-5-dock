@@ -1,0 +1,707 @@
+login as: docker
+docker@192.168.99.100's password:
+                         _             _
+            _         _ ( )           ( )
+  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __
+/' _ ` _ `\| |/' _ `\| || , <  ( ) ( )| '_`\  /'__`\
+| ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
+(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
+
+$ ps -ef | grep dockerd
+root      2350     1  2 04:47 ?        00:00:58 /usr/bin/dockerd -H tcp://0.0.0.                                      0:2376 -H unix:///var/run/docker.sock --tlsverify --tlscacert /etc/docker/ca.pem                                       --tlscert /etc/docker/server.pem --tlskey /etc/docker/server-key.pem --label pr                                      ovider=virtualbox --insecure-registry 10.96.0.0/12
+docker   25128 24930  0 05:35 pts/0    00:00:00 grep dockerd
+$ export PS1='\n$PWD> '
+
+/home/docker> docker version
+Client: Docker Engine - Community
+ Version:           18.09.6
+ API version:       1.39
+ Go version:        go1.10.8
+ Git commit:        481bc77
+ Built:             Sat May  4 02:33:34 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          18.09.6
+  API version:      1.39 (minimum version 1.12)
+  Go version:       go1.10.8
+  Git commit:       481bc77
+  Built:            Sat May  4 02:41:08 2019
+  OS/Arch:          linux/amd64
+  Experimental:     false
+
+/home/docker>
+
+/home/docker> ping google.com
+PING google.com (216.58.197.78): 56 data bytes
+64 bytes from 216.58.197.78: seq=0 ttl=54 time=135.587 ms
+64 bytes from 216.58.197.78: seq=1 ttl=54 time=54.743 ms
+^C
+--- google.com ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 54.743/95.165/135.587 ms
+
+/home/docker> docker container run nginx
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+f5d23c7fed46: Pull complete
+918b255d86e5: Pull complete
+8c0120a6f561: Pull complete
+Digest: sha256:eb3320e2f9ca409b7c0aa71aea3cf7ce7d018f03a372564dbdb023646958770b
+Status: Downloaded newer image for nginx:latest
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+
+/home/docker>  docker container ls -a | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS                          PORTS               NAMES
+40ad7245502b        nginx                  "nginx -g 'daemon of…"   11 minutes ago      Exited (0) About a minute ago                       clever_shamir
+
+/home/docker> docker container start 40ad7245502b
+40ad7245502b
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+40ad7245502b        nginx                  "nginx -g 'daemon of…"   12 minutes ago      Up 6 seconds        80/tcp              clever_shamir
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+40ad7245502b        nginx                  "nginx -g 'daemon of…"   14 minutes ago      Up 2 minutes        80/tcp              clever_shamir
+
+/home/docker> docker container run -d nginx
+c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+c9d179593a46        nginx                  "nginx -g 'daemon of…"   2 seconds ago       Up 1 second         80/tcp              wonderful_einstein
+40ad7245502b        nginx                  "nginx -g 'daemon of…"   14 minutes ago      Up 2 minutes        80/tcp              clever_shamir
+
+/home/docker>
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+c9d179593a46        nginx                  "nginx -g 'daemon of…"   2 minutes ago       Up 2 minutes        80/tcp              wonderful_einstein
+40ad7245502b        nginx                  "nginx -g 'daemon of…"   16 minutes ago      Up 4 minutes        80/tcp              clever_shamir
+
+/home/docker> docker container inspect wonderful_einstein
+[
+    {
+        "Id": "c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825",
+        "Created": "2019-08-05T06:39:26.895633394Z",
+        "Path": "nginx",
+        "Args": [
+            "-g",
+            "daemon off;"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 21473,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2019-08-05T06:39:27.334160877Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:e445ab08b2be8b178655b714f89e5db9504f67defd5c7408a00bade679a50d44",
+        "ResolvConfPath": "/var/lib/docker/containers/c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825/hostname",
+        "HostsPath": "/var/lib/docker/containers/c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825/hosts",
+        "LogPath": "/var/lib/docker/containers/c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825/c9d179593a46c5a7cdf06a870d8124ee8657448a62b4e001b849d1b457ef1825-json.log",
+        "Name": "/wonderful_einstein",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "CapAdd": null,
+            "CapDrop": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "shareable",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DiskQuota": 0,
+            "KernelMemory": 0,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": false,
+            "PidsLimit": 0,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/0ac145395460a59a095376d7304968a57acc1a3b0dd1cec702e2f0a9528564f8-init/diff:/var/lib/docker/overlay2/66fc4b4811d9b89b34658c79d9f8415b24c0fe77430d69df09e7e61d8fc2f045/diff:/var/lib/docker/overlay2/61d1df4cb7d43efc31877215d1194ec0089fb4303ef43062134ee2a2adeee88e/diff:/var/lib/docker/overlay2/49569428af03c48bba30e8261c8a1d64f22841d371404c99493bd3a52547ebb0/diff",
+                "MergedDir": "/var/lib/docker/overlay2/0ac145395460a59a095376d7304968a57acc1a3b0dd1cec702e2f0a9528564f8/merged",
+                "UpperDir": "/var/lib/docker/overlay2/0ac145395460a59a095376d7304968a57acc1a3b0dd1cec702e2f0a9528564f8/diff",
+                "WorkDir": "/var/lib/docker/overlay2/0ac145395460a59a095376d7304968a57acc1a3b0dd1cec702e2f0a9528564f8/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "c9d179593a46",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NGINX_VERSION=1.17.2",
+                "NJS_VERSION=0.3.3",
+                "PKG_RELEASE=1~buster"
+            ],
+            "Cmd": [
+                "nginx",
+                "-g",
+                "daemon off;"
+            ],
+            "ArgsEscaped": true,
+            "Image": "nginx",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+            },
+            "StopSignal": "SIGTERM"
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "1a891b5c344397752ae8e7af4ba5877574d6df51f2882841d6252d3c22d50299",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {
+                "80/tcp": null
+            },
+            "SandboxKey": "/var/run/docker/netns/1a891b5c3443",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "44e94fb4ea72c9fac672592cecd519df4799904c16942e244eb902a77cc5aa75",
+            "Gateway": "172.17.0.1",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "172.17.0.5",
+            "IPPrefixLen": 16,
+            "IPv6Gateway": "",
+            "MacAddress": "02:42:ac:11:00:05",
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "219547f9feb506e308526429be4b3ba376d5c06a5bb87d82e92604da4b157a27",
+                    "EndpointID": "44e94fb4ea72c9fac672592cecd519df4799904c16942e244eb902a77cc5aa75",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.5",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:05",
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]
+
+/home/docker> curl localhost:80
+curl: (7) Failed to connect to localhost port 80: Connection refused
+
+/home/docker> curl 172.17.0.5:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+/home/docker>
+
+/home/docker> ifconfig
+docker0   Link encap:Ethernet  HWaddr 02:42:57:C3:24:79
+          inet addr:172.17.0.1  Bcast:172.17.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::42:57ff:fec3:2479/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:24544 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:31405 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1774405 (1.6 MiB)  TX bytes:9335727 (8.9 MiB)
+
+eth0      Link encap:Ethernet  HWaddr 08:00:27:C6:51:2E
+          inet addr:10.0.2.15  Bcast:10.0.2.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fec6:512e/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:414971 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:40455 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:613987848 (585.5 MiB)  TX bytes:2510022 (2.3 MiB)
+
+eth1      Link encap:Ethernet  HWaddr 08:00:27:51:4D:8D
+          inet addr:192.168.99.100  Bcast:192.168.99.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fe51:4d8d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:1637 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1419 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:140404 (137.1 KiB)  TX bytes:244760 (239.0 KiB)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:718543 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:718543 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:139501769 (133.0 MiB)  TX bytes:139501769 (133.0 MiB)
+
+veth118044a Link encap:Ethernet  HWaddr 7A:94:D1:9C:1A:9C
+          inet6 addr: fe80::7894:d1ff:fe9c:1a9c/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:19 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:0 (0.0 B)  TX bytes:1512 (1.4 KiB)
+
+veth5d568f9 Link encap:Ethernet  HWaddr 66:5E:4F:B8:BB:14
+          inet6 addr: fe80::645e:4fff:feb8:bb14/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12162 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:15809 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1051305 (1.0 MiB)  TX bytes:4674815 (4.4 MiB)
+
+veth818ac0f Link encap:Ethernet  HWaddr 3E:DB:66:C1:CD:7A
+          inet6 addr: fe80::3cdb:66ff:fec1:cd7a/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:12375 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:15657 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1065444 (1.0 MiB)  TX bytes:4665660 (4.4 MiB)
+
+vethdd4ec56 Link encap:Ethernet  HWaddr 06:57:BF:AD:CF:2C
+          inet6 addr: fe80::457:bfff:fead:cf2c/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:7 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:26 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:1272 (1.2 KiB)  TX bytes:2028 (1.9 KiB)
+
+
+/home/docker>
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+c9d179593a46        nginx                  "nginx -g 'daemon of…"   20 minutes ago      Up 20 minutes       80/tcp              wonderful_einstein
+40ad7245502b        nginx                  "nginx -g 'daemon of…"   34 minutes ago      Up 22 minutes       80/tcp              clever_shamir
+
+/home/docker> docker container rm -f c9d179593a46 40ad7245502b
+c9d179593a46
+40ad7245502b
+
+/home/docker>  docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
+
+/home/docker> docker container run -d -p 9090:80 nginx
+d02ee8abf579b1ebc58af4272398de1b70349eea18118eef49d0a7f7a70120a6
+
+/home/docker> docker container inspect d02ee | grep -i ipaddress
+            "SecondaryIPAddresses": null,
+            "IPAddress": "172.17.0.4",
+                    "IPAddress": "172.17.0.4",
+
+/home/docker> curl 172.17.0.4:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+/home/docker> docker container stop d02ee
+d02ee
+
+/home/docker> docker container start d02ee
+d02ee
+
+/home/docker>
+
+/home/docker> docker container exec d02ee ls
+bin
+boot
+dev
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+
+/home/docker> docker container exec d02ee pwd
+/
+
+/home/docker> ls /
+bin  data  etc   init  lib64    media  opt   root  sbin  sys  usr
+c    dev   home  lib   linuxrc  mnt    proc  run   srv   tmp  var
+
+/home/docker> docker container exec d02ee touch /tmp/f1.txt
+
+/home/docker>
+
+/home/docker> docker container exec d02ee touch /tmp/f1.txt
+
+/home/docker> ls /tmp/f1.txt
+ls: cannot access '/tmp/f1.txt': No such file or directory
+
+/home/docker> docker container exec d02ee ls /tmp/f1.txt
+/tmp/f1.txt
+
+/home/docker> sh
+
+/home/docker> exit
+exit
+
+/home/docker> sh
+
+/home/docker> sh
+
+/home/docker> exit
+exit
+
+/home/docker> exit
+exit
+
+/home/docker> docker container exec -it d02ee sh
+# ls /tmp/f1.txt
+/tmp/f1.txt
+# cd /usr/share/nginx/html
+# pwd
+/usr/share/nginx/html
+# ls
+50x.html  index.html
+# vi
+sh: 5: vi: not found
+# ps
+sh: 6: ps: not found
+# cat > mypage.html
+<h1>My Code</h1>
+^C
+# ls
+50x.html  index.html  mypage.html
+# cat m
+cat: m: No such file or directory
+# cat mypage.html
+<h1>My Code</h1>
+# exit
+
+/home/docker> docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                  NAMES
+d02ee8abf579        nginx                  "nginx -g 'daemon of…"   2 hours ago         Up 2 hours          0.0.0.0:9090->80/tcp   sleepy_cartwright
+
+/home/docker> docker container commit d02ee8abf579 myprod
+sha256:b4b628c6561e2f0b25149e3ba6affb5612ae9c5bd1e1496575e2073cec389688
+
+/home/docker> docker container rm -f d02ee8abf579
+d02ee8abf579
+
+/home/docker>
+
+/home/docker> docker container run -d -p 9090:80 myprod
+85ac31d7329e4c695093fa264642ee7ddfe9ecddef336c42a1f5673cf9a7af28
+
+/home/docker> docker container exec 85ac31d ls /usr/share/nginx/html
+50x.html
+index.html
+mypage.html
+
+/home/docker> docker image push myprod
+The push refers to repository [docker.io/library/myprod]
+400a5ec18ba7: Preparing
+fe6a7a3b3f27: Preparing
+d0673244f7d4: Preparing
+d8a33133e477: Preparing
+denied: requested access to the resource is denied
+
+/home/docker> docker image tag myprod adityaprabhakara/myprod
+
+/home/docker> docker image push adityaprabhakara/myprod
+The push refers to repository [docker.io/adityaprabhakara/myprod]
+400a5ec18ba7: Preparing
+fe6a7a3b3f27: Preparing
+d0673244f7d4: Preparing
+d8a33133e477: Preparing
+denied: requested access to the resource is denied
+
+/home/docker> docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: adityaprabhakara
+Password:
+WARNING! Your password will be stored unencrypted in /home/docker/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+/home/docker> docker image push adityaprabhakara/myprod
+The push refers to repository [docker.io/adityaprabhakara/myprod]
+400a5ec18ba7: Pushed
+fe6a7a3b3f27: Mounted from library/nginx
+d0673244f7d4: Mounted from library/nginx
+d8a33133e477: Mounted from library/nginx
+latest: digest: sha256:4ddc0ded9a42f5600933921abde59e738c8baaec8258151b08e6f13f23520440 size: 1155
+
+/home/docker>
+
+/home/docker> docker image pull sreehk/myprod
+Using default tag: latest
+latest: Pulling from sreehk/myprod
+f5d23c7fed46: Already exists
+918b255d86e5: Already exists
+8c0120a6f561: Already exists
+9e2b12df7447: Pull complete
+Digest: sha256:27b0379d2e5eb33c3e3a8095dc1edf6a2661502d5c11240a27de4d250dca2b68
+Status: Downloaded newer image for sreehk/myprod:latest
+
+/home/docker> docker container ls | grep -v k8s
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                  NAMES
+85ac31d7329e        myprod                 "nginx -g 'daemon of…"   25 minutes ago      Up 25 minutes       0.0.0.0:9090->80/tcp   wonderful_hodgkin
+
+/home/docker> docker container run -d -p 9091:80 sreehk/myprod
+b8b6071b14b3966f9296ba1f8cb0a5bf5e6328864f336362ab6495ba0ff67cd3
+
+/home/docker>
+
+/home/docker> docker image ls
+REPOSITORY                                TAG                 IMAGE ID            CREATED             SIZE
+sreehk/myprod                             latest              6bebbc570a0b        43 minutes ago      126MB
+adityaprabhakara/myprod                   latest              b4b628c6561e        44 minutes ago      126MB
+myprod                                    latest              b4b628c6561e        44 minutes ago      126MB
+nginx                                     latest              e445ab08b2be        12 days ago         126MB
+k8s.gcr.io/kube-proxy                     v1.15.0             d235b23c3570        6 weeks ago         82.4MB
+k8s.gcr.io/kube-apiserver                 v1.15.0             201c7a840312        6 weeks ago         207MB
+k8s.gcr.io/kube-scheduler                 v1.15.0             2d3813851e87        6 weeks ago         81.1MB
+k8s.gcr.io/kube-controller-manager        v1.15.0             8328bb49b652        6 weeks ago         159MB
+k8s.gcr.io/kube-addon-manager             v9.0                119701e77cbc        6 months ago        83.1MB
+k8s.gcr.io/coredns                        1.3.1               eb516548c180        6 months ago        40.3MB
+k8s.gcr.io/kubernetes-dashboard-amd64     v1.10.1             f9aed6605b81        7 months ago        122MB
+k8s.gcr.io/etcd                           3.3.10              2c4adeb21b4f        8 months ago        258MB
+k8s.gcr.io/k8s-dns-sidecar-amd64          1.14.13             4b2e93f0133d        10 months ago       42.9MB
+k8s.gcr.io/k8s-dns-kube-dns-amd64         1.14.13             55a3c5209c5e        10 months ago       51.2MB
+k8s.gcr.io/k8s-dns-dnsmasq-nanny-amd64    1.14.13             6dc8ef8287d3        10 months ago       41.4MB
+k8s.gcr.io/pause                          3.1                 da86e6ba6ca1        19 months ago       742kB
+gcr.io/k8s-minikube/storage-provisioner   v1.8.1              4689081edb10        21 months ago       80.8MB
+
+/home/docker>
+
+/home/docker> docker image ls myprod
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+myprod              latest              b4b628c6561e        45 minutes ago      126MB
+
+/home/docker> docker image ls nginx
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+nginx               latest              e445ab08b2be        12 days ago         126MB
+
+/home/docker> docker image history nginx
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+e445ab08b2be        12 days ago         /bin/sh -c #(nop)  CMD ["nginx" "-g" "daemon…   0B
+<missing>           12 days ago         /bin/sh -c #(nop)  STOPSIGNAL SIGTERM           0B
+<missing>           12 days ago         /bin/sh -c #(nop)  EXPOSE 80                    0B
+<missing>           12 days ago         /bin/sh -c ln -sf /dev/stdout /var/log/nginx…   22B
+<missing>           12 days ago         /bin/sh -c set -x     && addgroup --system -…   56.6MB
+<missing>           12 days ago         /bin/sh -c #(nop)  ENV PKG_RELEASE=1~buster     0B
+<missing>           12 days ago         /bin/sh -c #(nop)  ENV NJS_VERSION=0.3.3        0B
+<missing>           12 days ago         /bin/sh -c #(nop)  ENV NGINX_VERSION=1.17.2     0B
+<missing>           12 days ago         /bin/sh -c #(nop)  LABEL maintainer=NGINX Do…   0B
+<missing>           3 weeks ago         /bin/sh -c #(nop)  CMD ["bash"]                 0B
+<missing>           3 weeks ago         /bin/sh -c #(nop) ADD file:71ac26257198ecf6a…   69.2MB
+
+/home/docker> docker image history myprod
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+b4b628c6561e        About an hour ago   nginx -g daemon off;                            19B
+e445ab08b2be        12 days ago         /bin/sh -c #(nop)  CMD ["nginx" "-g" "daemon…   0B
+<missing>           12 days ago         /bin/sh -c #(nop)  STOPSIGNAL SIGTERM           0B
+<missing>           12 days ago         /bin/sh -c #(nop)  EXPOSE 80                    0B
+<missing>           12 days ago         /bin/sh -c ln -sf /dev/stdout /var/log/nginx…   22B
+<missing>           12 days ago         /bin/sh -c set -x     && addgroup --system -…   56.6MB
+<missing>           12 days ago         /bin/sh -c #(nop)  ENV PKG_RELEASE=1~buster     0B
+<missing>           12 days ago         /bin/sh -c #(nop)  ENV NJS_VERSION=0.3.3        0B
+<missing>           12 days ago         /bin/sh -c #(nop)  ENV NGINX_VERSION=1.17.2     0B
+<missing>           12 days ago         /bin/sh -c #(nop)  LABEL maintainer=NGINX Do…   0B
+<missing>           3 weeks ago         /bin/sh -c #(nop)  CMD ["bash"]                 0B
+<missing>           3 weeks ago         /bin/sh -c #(nop) ADD file:71ac26257198ecf6a…   69.2MB
+
+/home/docker>
+
+/home/docker> docker image ls
+REPOSITORY                                TAG                 IMAGE ID            CREATED             SIZE
+sreehk/myprod                             latest              6bebbc570a0b        About an hour ago   126MB
+adityaprabhakara/myprod                   latest              b4b628c6561e        About an hour ago   126MB
+myprod                                    latest              b4b628c6561e        About an hour ago   126MB
+nginx                                     latest              e445ab08b2be        12 days ago         126MB
+k8s.gcr.io/kube-proxy                     v1.15.0             d235b23c3570        6 weeks ago         82.4MB
+k8s.gcr.io/kube-apiserver                 v1.15.0             201c7a840312        6 weeks ago         207MB
+k8s.gcr.io/kube-controller-manager        v1.15.0             8328bb49b652        6 weeks ago         159MB
+k8s.gcr.io/kube-scheduler                 v1.15.0             2d3813851e87        6 weeks ago         81.1MB
+k8s.gcr.io/kube-addon-manager             v9.0                119701e77cbc        6 months ago        83.1MB
+k8s.gcr.io/coredns                        1.3.1               eb516548c180        6 months ago        40.3MB
+k8s.gcr.io/kubernetes-dashboard-amd64     v1.10.1             f9aed6605b81        7 months ago        122MB
+k8s.gcr.io/etcd                           3.3.10              2c4adeb21b4f        8 months ago        258MB
+k8s.gcr.io/k8s-dns-sidecar-amd64          1.14.13             4b2e93f0133d        10 months ago       42.9MB
+k8s.gcr.io/k8s-dns-kube-dns-amd64         1.14.13             55a3c5209c5e        10 months ago       51.2MB
+k8s.gcr.io/k8s-dns-dnsmasq-nanny-amd64    1.14.13             6dc8ef8287d3        10 months ago       41.4MB
+k8s.gcr.io/pause                          3.1                 da86e6ba6ca1        19 months ago       742kB
+gcr.io/k8s-minikube/storage-provisioner   v1.8.1              4689081edb10        21 months ago       80.8MB
+
+/home/docker>
+
+/home/docker> docker image ls myprod
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+myprod              latest              b4b628c6561e        About an hour ago   126MB
+
+/home/docker> docker image ls adityaprabhakara/myprod
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+adityaprabhakara/myprod   latest              b4b628c6561e        About an hour ago   126MB
+
+/home/docker>
+
