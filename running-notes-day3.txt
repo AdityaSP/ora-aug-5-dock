@@ -1,0 +1,911 @@
+/c/Users/Aditya/docker-workshop/aug5/build-machine> cat Dockerfile
+FROM jenkins/jenkins:lts
+USER root
+RUN apt-get update -qq \
+    && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+    && apt-get update  -qq \
+    && apt-get install docker-ce=18.03.1~ce-0~debian -y
+RUN usermod -aG docker jenkins
+RUN apt-get install -y git
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> vi Dockerfile
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> ls
+Dockerfile  release
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> del release
+-bash: del: command not found
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> rm release
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> ls
+Dockerfile
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> cat Dockerfile
+FROM jenkins/jenkins:lts
+USER root
+RUN apt-get update -qq \
+    && apt-get install -qqy apt-transport-https ca-certificates curl gnupg2 software-properties-common \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+    && apt-get update  -qq \
+    && apt-get install docker-ce=18.03.1~ce-0~debian -y
+RUN usermod -aG docker jenkins
+RUN apt-get install -y git
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> ls
+Dockerfile
+
+machine^CAditya/docker-workshop/aug5/build-machine> docker image build -t build-
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> echo $TERM
+xterm
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> export TERM=xterm
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> tty
+/dev/pts/0
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> tty sane
+tty: extra operand 'sane'
+/dev/pts/0
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> #docker image build -f Dockerfile -t build-machine .
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker image ls build-machine
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+build-machine       latest              44101d018280        About an hour ago   1.1GB
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker image history build-machine
+IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+44101d018280        About an hour ago   /bin/sh -c apt-get install -y git               0B
+c21910f3fdf9        About an hour ago   /bin/sh -c usermod -aG docker jenkins           4.56kB
+58860774da45        About an hour ago   /bin/sh -c apt-get update -qq     && apt-get…   536MB
+4e4689c61691        About an hour ago   /bin/sh -c #(nop)  USER root                    0B
+b137a5753eb1        2 weeks ago         /bin/sh -c #(nop) COPY file:1fe9a615112773bb…   9.35kB
+<missing>           2 weeks ago         /bin/sh -c #(nop) COPY file:f97999fac8a63cf8…   3.96kB
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENTRYPOINT ["/sbin/tini" …   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop) COPY file:dc942ca949bb159f…   529B
+<missing>           2 weeks ago         /bin/sh -c #(nop) COPY file:03e9864c3191dd85…   1.78kB
+<missing>           2 weeks ago         /bin/sh -c #(nop) COPY file:ead1faf5f5548840…   6.46kB
+<missing>           2 weeks ago         /bin/sh -c #(nop)  USER jenkins                 0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV COPY_REFERENCE_FILE_L…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  EXPOSE 50000                 0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  EXPOSE 8080                  0B
+<missing>           2 weeks ago         |9 JENKINS_SHA=33a6c3161cf8de9c8729fd83914d7…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV JENKINS_INCREMENTALS_…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV JENKINS_UC_EXPERIMENT…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV JENKINS_UC=https://up…   0B
+<missing>           2 weeks ago         |9 JENKINS_SHA=33a6c3161cf8de9c8729fd83914d7…   77.4MB
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG JENKINS_URL=https://r…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG JENKINS_SHA=5bb075b81…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV JENKINS_VERSION=2.176…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG JENKINS_VERSION          0B
+<missing>           2 weeks ago         |7 TINI_VERSION=v0.16.1 agent_port=50000 gid…   866kB
+<missing>           2 weeks ago         /bin/sh -c #(nop) COPY file:653491cb486e752a…   7.15kB
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG TINI_VERSION=v0.16.1     0B
+<missing>           2 weeks ago         |6 agent_port=50000 gid=1000 group=jenkins h…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  VOLUME [/var/jenkins_home]   0B
+<missing>           2 weeks ago         |6 agent_port=50000 gid=1000 group=jenkins h…   328kB
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV JENKINS_SLAVE_AGENT_P…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ENV JENKINS_HOME=/var/jen…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG JENKINS_HOME=/var/jen…   0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG agent_port=50000         0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG http_port=8080           0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG gid=1000                 0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG uid=1000                 0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG group=jenkins            0B
+<missing>           2 weeks ago         /bin/sh -c #(nop)  ARG user=jenkins             0B
+<missing>           2 weeks ago         /bin/sh -c apt-get update && apt-get upgrade…   534kB
+<missing>           4 weeks ago         /bin/sh -c set -eux;   dpkgArch="$(dpkg --pr…   205MB
+<missing>           4 weeks ago         /bin/sh -c #(nop)  ENV JAVA_URL_VERSION=8u21…   0B
+<missing>           4 weeks ago         /bin/sh -c #(nop)  ENV JAVA_BASE_URL=https:/…   0B
+<missing>           4 weeks ago         /bin/sh -c #(nop)  ENV JAVA_VERSION=8u212-b04   0B
+<missing>           4 weeks ago         /bin/sh -c { echo '#/bin/sh'; echo 'echo "$J…   27B
+<missing>           4 weeks ago         /bin/sh -c #(nop)  ENV PATH=/usr/local/openj…   0B
+<missing>           4 weeks ago         /bin/sh -c #(nop)  ENV JAVA_HOME=/usr/local/…   0B
+<missing>           4 weeks ago         /bin/sh -c #(nop)  ENV LANG=C.UTF-8             0B
+<missing>           4 weeks ago         /bin/sh -c set -eux;  apt-get update;  apt-g…   9.67MB
+<missing>           4 weeks ago         /bin/sh -c apt-get update && apt-get install…   142MB
+<missing>           4 weeks ago         /bin/sh -c set -ex;  if ! command -v gpg > /…   7.81MB
+<missing>           4 weeks ago         /bin/sh -c apt-get update && apt-get install…   23.2MB
+<missing>           4 weeks ago         /bin/sh -c #(nop)  CMD ["bash"]                 0B
+<missing>           4 weeks ago         /bin/sh -c #(nop) ADD file:f615b611820773fd6…   101MB
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container run -d -v /var/run/docker.sock:/var/run/docker.sock -p 9090:8080 -v /c/Users/Aditya/docker-workshop/aug5/build-machine/jenkins_home:/var/jenkins_home --name bm build-machine
+9bef1a580963582eac40bd49a9ec100316d2a713fe55e7467589bc5f177846b3
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container logs -f bm
+Running from: /usr/share/jenkins/jenkins.war
+webroot: EnvVars.masterEnvVars.get("JENKINS_HOME")
+Aug 07, 2019 6:19:16 AM org.eclipse.jetty.util.log.Log initialized
+INFO: Logging initialized @483ms to org.eclipse.jetty.util.log.JavaUtilLog
+Aug 07, 2019 6:19:16 AM winstone.Logger logInternal
+INFO: Beginning extraction from war file
+Aug 07, 2019 6:19:23 AM org.eclipse.jetty.server.handler.ContextHandler setContextPath
+WARNING: Empty contextPath
+Aug 07, 2019 6:19:23 AM org.eclipse.jetty.server.Server doStart
+INFO: jetty-9.4.z-SNAPSHOT; built: 2019-02-15T16:53:49.381Z; git: eb70b240169fcf1abbd86af36482d1c49826fa0b; jvm 1.8.0_212-b04
+Aug 07, 2019 6:19:27 AM org.eclipse.jetty.webapp.StandardDescriptorProcessor visitServlet
+INFO: NO JSP Support for /, did not find org.eclipse.jetty.jsp.JettyJspServlet
+Aug 07, 2019 6:19:27 AM org.eclipse.jetty.server.session.DefaultSessionIdManager doStart
+INFO: DefaultSessionIdManager workerName=node0
+Aug 07, 2019 6:19:27 AM org.eclipse.jetty.server.session.DefaultSessionIdManager doStart
+INFO: No SessionScavenger set, using defaults
+Aug 07, 2019 6:19:27 AM org.eclipse.jetty.server.session.HouseKeeper startScavenging
+INFO: node0 Scavenging every 660000ms
+Jenkins home directory: /var/jenkins_home found at: EnvVars.masterEnvVars.get("JENKINS_HOME")
+Aug 07, 2019 6:19:28 AM org.eclipse.jetty.server.handler.ContextHandler doStart
+INFO: Started w.@3bffddff{Jenkins v2.176.2,/,file:///var/jenkins_home/war/,AVAILABLE}{/var/jenkins_home/war}
+Aug 07, 2019 6:19:28 AM org.eclipse.jetty.server.AbstractConnector doStart
+INFO: Started ServerConnector@64712be{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+Aug 07, 2019 6:19:28 AM org.eclipse.jetty.server.Server doStart
+INFO: Started @12862ms
+Aug 07, 2019 6:19:29 AM winstone.Logger logInternal
+INFO: Winstone Servlet Engine v4.0 running: controlPort=disabled
+Aug 07, 2019 6:19:32 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:19:32 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:19:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:19:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:19:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:19:36 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:19:36 AM hudson.model.AsyncPeriodicWork$1 run
+INFO: Started Download metadata
+Aug 07, 2019 6:19:36 AM hudson.util.Retrier start
+INFO: Attempt #1 to do the action check updates server
+Aug 07, 2019 6:19:39 AM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.web.context.support.StaticWebApplicationContext@13980da3: display name [Root WebApplicationContext]; startup date [Wed Aug 07 06:19:39 UTC 2019]; root of context hierarchy
+Aug 07, 2019 6:19:39 AM org.springframework.context.support.AbstractApplicationContext obtainFreshBeanFactory
+INFO: Bean factory for application context [org.springframework.web.context.support.StaticWebApplicationContext@13980da3]: org.springframework.beans.factory.support.DefaultListableBeanFactory@31506748
+Aug 07, 2019 6:19:39 AM org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons
+INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@31506748: defining beans [authenticationManager]; root of factory hierarchy
+Aug 07, 2019 6:19:40 AM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.web.context.support.StaticWebApplicationContext@764b1f74: display name [Root WebApplicationContext]; startup date [Wed Aug 07 06:19:40 UTC 2019]; root of context hierarchy
+Aug 07, 2019 6:19:40 AM org.springframework.context.support.AbstractApplicationContext obtainFreshBeanFactory
+INFO: Bean factory for application context [org.springframework.web.context.support.StaticWebApplicationContext@764b1f74]: org.springframework.beans.factory.support.DefaultListableBeanFactory@37b69978
+Aug 07, 2019 6:19:40 AM org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons
+INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@37b69978: defining beans [filter,legacy]; root of factory hierarchy
+Aug 07, 2019 6:19:40 AM jenkins.install.SetupWizard init
+INFO:
+
+*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+Please use the following password to proceed to installation:
+
+ce50979372d94d039540e43cc974942d
+
+This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************
+
+Aug 07, 2019 6:20:06 AM hudson.model.UpdateSite updateData
+INFO: Obtained the latest update center data file for UpdateSource default
+Aug 07, 2019 6:20:08 AM hudson.model.DownloadService$Downloadable load
+INFO: Obtained the updated data file for hudson.tasks.Maven.MavenInstaller
+Aug 07, 2019 6:20:08 AM hudson.util.Retrier start
+INFO: Performed the action check updates server successfully at the attempt #1
+Aug 07, 2019 6:20:08 AM hudson.model.AsyncPeriodicWork$1 run
+INFO: Finished Download metadata. 31,826 ms
+Aug 07, 2019 6:20:09 AM hudson.model.UpdateSite updateData
+INFO: Obtained the latest update center data file for UpdateSource default
+Aug 07, 2019 6:20:09 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:20:09 AM hudson.WebAppMain$3 run
+INFO: Jenkins is fully up and running
+Aug 07, 2019 6:22:04 AM org.kohsuke.stapler.LocaleDrivenResourceProvider getLocaleDrivenResourceProviders
+INFO: Registered LocaleDrivenResourceProvider: jenkins.MetaLocaleDrivenResourceProvider@6b0f4b4c
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of workflow-api for plugin timestamper
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of scm-api for plugin workflow-api
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of structs for plugin scm-api
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of jdk-tool for plugin structs
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin scm-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Oracle Java SE Development Kit Installer on behalf of admin
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of structs for plugin workflow-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of workflow-step-api for plugin workflow-api
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of structs for plugin workflow-step-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of workflow-step-api for plugin timestamper already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of workflow-scm-step for plugin git
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of command-launcher for plugin workflow-scm-step
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of script-security for plugin command-launcher
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin script-security already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin command-launcher already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin workflow-scm-step already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of workflow-step-api for plugin workflow-scm-step already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of credentials for plugin git
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of structs for plugin credentials already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of structs for plugin git already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of git-client for plugin git
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of apache-httpcomponents-client-4-api for plugin git-client
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of command-launcher for plugin apache-httpcomponents-client-4-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin apache-httpcomponents-client-4-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of credentials for plugin git-client already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of structs for plugin git-client already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of jsch for plugin git-client
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of command-launcher for plugin jsch already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin jsch already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of ssh-credentials for plugin jsch
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of credentials for plugin ssh-credentials already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of ssh-credentials for plugin git-client already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of ssh-credentials for plugin git already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of scm-api for plugin git already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of workflow-step-api for plugin git already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of mailer for plugin git
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of display-url-api for plugin mailer
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin display-url-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of matrix-project for plugin git
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of script-security for plugin matrix-project already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of junit for plugin matrix-project
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of script-security for plugin junit already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of workflow-step-api for plugin junit already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of workflow-api for plugin junit already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of structs for plugin junit already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of command-launcher for plugin matrix-project already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin matrix-project already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Adding dependent install of bouncycastle-api for plugin matrix-project
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of command-launcher for plugin bouncycastle-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin bouncycastle-api already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of mailer for plugin ldap already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of command-launcher for plugin ldap already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of jdk-tool for plugin ldap already added, skipping
+Aug 07, 2019 6:29:19 AM hudson.model.UpdateSite$Plugin deploy
+INFO: Dependent install of bouncycastle-api for plugin ldap already added, skipping
+Aug 07, 2019 6:29:23 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Oracle Java SE Development Kit Installer
+Aug 07, 2019 6:29:24 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/jdk-tool.jpi
+Aug 07, 2019 6:29:33 AM hudson.model.DownloadService$Downloadable load
+INFO: Obtained the updated data file for hudson.tools.JDKInstaller
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:29:33 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:29:34 AM hudson.PluginManager dynamicLoad
+INFO: Plugin jdk-tool:1.3 dynamically installed
+Aug 07, 2019 6:29:34 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Oracle Java SE Development Kit Installer
+Aug 07, 2019 6:29:34 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Structs on behalf of admin
+Aug 07, 2019 6:29:36 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Structs
+Aug 07, 2019 6:29:37 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/structs.jpi
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:29:37 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:29:37 AM hudson.PluginManager dynamicLoad
+INFO: Plugin structs:1.20 dynamically installed
+Aug 07, 2019 6:29:37 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Structs
+Aug 07, 2019 6:29:37 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of SCM API on behalf of admin
+Aug 07, 2019 6:29:40 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading SCM API
+Aug 07, 2019 6:29:43 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/scm-api.jpi
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:29:43 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:29:43 AM hudson.PluginManager dynamicLoad
+INFO: Plugin scm-api:2.6.3 dynamically installed
+Aug 07, 2019 6:29:43 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: SCM API
+Aug 07, 2019 6:29:43 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Pipeline: Step API on behalf of admin
+Aug 07, 2019 6:29:46 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Pipeline: Step API
+Aug 07, 2019 6:29:47 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/workflow-step-api.jpi
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:29:47 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:29:47 AM hudson.PluginManager dynamicLoad
+INFO: Plugin workflow-step-api:2.20 dynamically installed
+Aug 07, 2019 6:29:47 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Pipeline: Step API
+Aug 07, 2019 6:29:47 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Pipeline: API on behalf of admin
+Aug 07, 2019 6:29:50 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Pipeline: API
+Aug 07, 2019 6:29:51 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/workflow-api.jpi
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:29:51 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:29:51 AM hudson.PluginManager dynamicLoad
+INFO: Plugin workflow-api:2.36 dynamically installed
+Aug 07, 2019 6:29:51 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Pipeline: API
+Aug 07, 2019 6:29:51 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Timestamper on behalf of admin
+Aug 07, 2019 6:29:57 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Timestamper
+Aug 07, 2019 6:29:58 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/timestamper.jpi
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:29:59 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:29:59 AM hudson.PluginManager dynamicLoad
+INFO: Plugin timestamper:1.10 dynamically installed
+Aug 07, 2019 6:29:59 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Timestamper
+Aug 07, 2019 6:29:59 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Script Security on behalf of admin
+Aug 07, 2019 6:30:01 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Script Security
+Aug 07, 2019 6:30:04 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/script-security.jpi
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:05 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:05 AM hudson.PluginManager dynamicLoad
+INFO: Plugin script-security:1.62 dynamically installed
+Aug 07, 2019 6:30:05 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Script Security
+Aug 07, 2019 6:30:05 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Command Agent Launcher on behalf of admin
+Aug 07, 2019 6:30:07 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Command Agent Launcher
+Aug 07, 2019 6:30:07 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/command-launcher.jpi
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:07 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:07 AM hudson.PluginManager dynamicLoad
+INFO: Plugin command-launcher:1.3 dynamically installed
+Aug 07, 2019 6:30:07 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Command Agent Launcher
+Aug 07, 2019 6:30:07 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Pipeline: SCM Step on behalf of admin
+Aug 07, 2019 6:30:10 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Pipeline: SCM Step
+Aug 07, 2019 6:30:10 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/workflow-scm-step.jpi
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:10 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:10 AM hudson.PluginManager dynamicLoad
+INFO: Plugin workflow-scm-step:2.9 dynamically installed
+Aug 07, 2019 6:30:10 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Pipeline: SCM Step
+Aug 07, 2019 6:30:10 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Credentials on behalf of admin
+Aug 07, 2019 6:30:12 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Credentials
+Aug 07, 2019 6:30:17 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/credentials.jpi
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:19 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:19 AM hudson.PluginManager dynamicLoad
+INFO: Plugin credentials:2.2.1 dynamically installed
+Aug 07, 2019 6:30:19 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Credentials
+Aug 07, 2019 6:30:19 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Apache HttpComponents Client 4.x API on behalf of admin
+Aug 07, 2019 6:30:21 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Apache HttpComponents Client 4.x API
+Aug 07, 2019 6:30:29 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/apache-httpcomponents-client-4-api.jpi
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:30 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:30 AM hudson.PluginManager dynamicLoad
+INFO: Plugin apache-httpcomponents-client-4-api:4.5.5-3.0 dynamically installed
+Aug 07, 2019 6:30:30 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Apache HttpComponents Client 4.x API
+Aug 07, 2019 6:30:30 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of SSH Credentials on behalf of admin
+Aug 07, 2019 6:30:33 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading SSH Credentials
+Aug 07, 2019 6:30:33 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/ssh-credentials.jpi
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:35 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:35 AM hudson.PluginManager dynamicLoad
+INFO: Plugin ssh-credentials:1.17.1 dynamically installed
+Aug 07, 2019 6:30:35 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: SSH Credentials
+Aug 07, 2019 6:30:35 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of JSch dependency on behalf of admin
+Aug 07, 2019 6:30:37 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading JSch dependency
+Aug 07, 2019 6:30:39 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/jsch.jpi
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:30:39 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:30:39 AM hudson.PluginManager dynamicLoad
+INFO: Plugin jsch:0.1.55.1 dynamically installed
+Aug 07, 2019 6:30:39 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: JSch dependency
+Aug 07, 2019 6:30:39 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Git client on behalf of admin
+Aug 07, 2019 6:30:42 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Git client
+Aug 07, 2019 6:30:59 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/git-client.jpi
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:31:01 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:31:01 AM hudson.PluginManager dynamicLoad
+INFO: Plugin git-client:2.8.0 dynamically installed
+Aug 07, 2019 6:31:01 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Git client
+Aug 07, 2019 6:31:01 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Display URL API on behalf of admin
+Aug 07, 2019 6:31:03 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Display URL API
+Aug 07, 2019 6:31:04 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/display-url-api.jpi
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:31:04 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:31:04 AM hudson.PluginManager dynamicLoad
+INFO: Plugin display-url-api:2.3.2 dynamically installed
+Aug 07, 2019 6:31:04 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Display URL API
+Aug 07, 2019 6:31:04 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Mailer on behalf of admin
+Aug 07, 2019 6:31:06 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Mailer
+Aug 07, 2019 6:31:07 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/mailer.jpi
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:31:08 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:31:08 AM hudson.PluginManager dynamicLoad
+INFO: Plugin mailer:1.24 dynamically installed
+Aug 07, 2019 6:31:08 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Mailer
+Aug 07, 2019 6:31:08 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of JUnit on behalf of admin
+Aug 07, 2019 6:31:10 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading JUnit
+Aug 07, 2019 6:31:12 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/junit.jpi
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:31:12 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:31:13 AM hudson.PluginManager dynamicLoad
+INFO: Plugin junit:1.28 dynamically installed
+Aug 07, 2019 6:31:13 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: JUnit
+Aug 07, 2019 6:31:13 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of bouncycastle API on behalf of admin
+Aug 07, 2019 6:31:14 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading bouncycastle API
+Aug 07, 2019 6:31:33 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/bouncycastle-api.jpi
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:31:42 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:31:42 AM hudson.PluginManager dynamicLoad
+INFO: Plugin bouncycastle-api:2.17 dynamically installed
+Aug 07, 2019 6:31:42 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: bouncycastle API
+Aug 07, 2019 6:31:42 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Matrix Project on behalf of admin
+Aug 07, 2019 6:31:45 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Matrix Project
+Aug 07, 2019 6:31:46 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/matrix-project.jpi
+Aug 07, 2019 6:31:49 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:31:49 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:31:49 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:31:49 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:31:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:31:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:31:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:31:51 AM hudson.PluginManager dynamicLoad
+INFO: Plugin matrix-project:1.14 dynamically installed
+Aug 07, 2019 6:31:51 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Matrix Project
+Aug 07, 2019 6:31:51 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Git on behalf of admin
+Aug 07, 2019 6:31:53 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Git
+Aug 07, 2019 6:32:01 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/git.jpi
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:32:17 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:32:17 AM hudson.PluginManager dynamicLoad
+INFO: Plugin git:3.11.0 dynamically installed
+Aug 07, 2019 6:32:17 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Git
+Aug 07, 2019 6:32:17 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of Matrix Authorization Strategy on behalf of admin
+Aug 07, 2019 6:32:20 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading Matrix Authorization Strategy
+Aug 07, 2019 6:32:21 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/matrix-auth.jpi
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:32:24 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:32:24 AM hudson.PluginManager dynamicLoad
+INFO: Plugin matrix-auth:2.4.2 dynamically installed
+Aug 07, 2019 6:32:24 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: Matrix Authorization Strategy
+Aug 07, 2019 6:32:24 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of PAM Authentication on behalf of admin
+Aug 07, 2019 6:32:27 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading PAM Authentication
+Aug 07, 2019 6:32:38 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/pam-auth.jpi
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:32:40 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:32:41 AM hudson.PluginManager dynamicLoad
+INFO: Plugin pam-auth:1.5.1 dynamically installed
+Aug 07, 2019 6:32:41 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: PAM Authentication
+Aug 07, 2019 6:32:41 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Starting the installation of LDAP on behalf of admin
+Aug 07, 2019 6:32:45 AM hudson.model.UpdateCenter$UpdateCenterConfiguration download
+INFO: Downloading LDAP
+Aug 07, 2019 6:32:47 AM hudson.PluginManager dynamicLoad
+INFO: Attempting to dynamic load /var/jenkins_home/plugins/ldap.jpi
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started initialization
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Listed all plugins
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Prepared all plugins
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Started all plugins
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Augmented all extensions
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Loaded all jobs
+Aug 07, 2019 6:32:50 AM jenkins.InitReactorRunner$1 onAttained
+INFO: Completed initialization
+Aug 07, 2019 6:32:51 AM hudson.PluginManager dynamicLoad
+INFO: Plugin ldap:1.20 dynamically installed
+Aug 07, 2019 6:32:51 AM hudson.model.UpdateCenter$DownloadJob run
+INFO: Installation successful: LDAP
+Aug 07, 2019 6:50:50 AM hudson.model.Run execute
+INFO: aug7 #1 main build action completed: SUCCESS
+Aug 07, 2019 6:52:06 AM hudson.model.AsyncPeriodicWork$1 run
+INFO: Started Workspace clean-up
+Aug 07, 2019 6:52:06 AM hudson.model.AsyncPeriodicWork$1 run
+INFO: Finished Workspace clean-up. 20 ms
+^C
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container exec bm docker container ls
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                               NAMES
+6fd1d6abf6a1        2d3813851e87           "kube-scheduler --bi…"   51 seconds ago      Up 50 seconds                                           k8s_kube-scheduler_kube-scheduler-minikube_kube-system_31d9ee8b7fb12e797dc981a8686f6b2b_9
+ee0e2cac04b1        eb516548c180           "/coredns -conf /etc…"   3 minutes ago       Up 3 minutes                                            k8s_coredns_coredns-5c98db65d4-trt27_kube-system_88bfc54f-d9a4-4670-ba4b-6ead6bb210a1_12
+053e309cc905        eb516548c180           "/coredns -conf /etc…"   3 minutes ago       Up 3 minutes                                            k8s_coredns_coredns-5c98db65d4-z66tl_kube-system_63f25925-2b2a-40cc-bddf-e7628c325a0e_12
+ed9f53a313ad        201c7a840312           "kube-apiserver --ad…"   3 minutes ago       Up 3 minutes                                            k8s_kube-apiserver_kube-apiserver-minikube_kube-system_e0f883122ef4b18e9fbea5c005bca446_7
+06afb1279043        2c4adeb21b4f           "etcd --advertise-cl…"   12 minutes ago      Up 12 minutes                                           k8s_etcd_etcd-minikube_kube-system_89f36d1de777528a3e8b9a2534a41af4_5
+9bef1a580963        build-machine          "/sbin/tini -- /usr/…"   35 minutes ago      Up 35 minutes       50000/tcp, 0.0.0.0:9090->8080/tcp   bm
+cfcf980a48b4        app                    "httpd -D FOREGROUND"    About an hour ago   Up About an hour                                        competent_hypatia
+7be633dff768        build-machine          "/sbin/tini -- /usr/…"   2 hours ago         Up 2 hours          8080/tcp, 50000/tcp                 distracted_aryabhata
+e438ce17bce1        4689081edb10           "/storage-provisioner"   3 hours ago         Up 3 hours                                              k8s_storage-provisioner_storage-provisioner_kube-system_2981634c-eb51-47fb-9a1e-8e5f01368e11_8
+b47a92f575cc        d235b23c3570           "/usr/local/bin/kube…"   3 hours ago         Up 3 hours                                              k8s_kube-proxy_kube-proxy-8dtqq_kube-system_510a4c49-3cfd-48d9-b7b3-d0c32679732b_4
+19c022bd74d6        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_kube-proxy-8dtqq_kube-system_510a4c49-3cfd-48d9-b7b3-d0c32679732b_4
+587e824367e7        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_coredns-5c98db65d4-trt27_kube-system_88bfc54f-d9a4-4670-ba4b-6ead6bb210a1_4
+16aad87a01a7        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_coredns-5c98db65d4-z66tl_kube-system_63f25925-2b2a-40cc-bddf-e7628c325a0e_4
+42cabb53035d        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_storage-provisioner_kube-system_2981634c-eb51-47fb-9a1e-8e5f01368e11_4
+4637b91eab83        119701e77cbc           "/opt/kube-addons.sh"    3 hours ago         Up 3 hours                                              k8s_kube-addon-manager_kube-addon-manager-minikube_kube-system_65a31d2b812b11a2035f37c8a742e46f_4
+6b78fb2e0bbd        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_kube-controller-manager-minikube_kube-system_676a8a1e3e146d0c0f7c4f6e1e96b578_4
+1cb51b9690b4        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_etcd-minikube_kube-system_89f36d1de777528a3e8b9a2534a41af4_4
+5251c59038ab        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_kube-apiserver-minikube_kube-system_e0f883122ef4b18e9fbea5c005bca446_4
+2310f6dea41b        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_kube-addon-manager-minikube_kube-system_65a31d2b812b11a2035f37c8a742e46f_4
+e1b0ec55b06b        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_kube-scheduler-minikube_kube-system_31d9ee8b7fb12e797dc981a8686f6b2b_4
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
