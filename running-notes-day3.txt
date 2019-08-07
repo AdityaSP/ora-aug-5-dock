@@ -909,3 +909,111 @@ b47a92f575cc        d235b23c3570           "/usr/local/bin/kube…"   3 hours ag
 e1b0ec55b06b        k8s.gcr.io/pause:3.1   "/pause"                 3 hours ago         Up 3 hours                                              k8s_POD_kube-scheduler-minikube_kube-system_31d9ee8b7fb12e797dc981a8686f6b2b_4
 
 /c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+28a717a86703        blog-nw             bridge              local
+f68bcbf3ab9d        bridge              bridge              local
+62e0554f0114        host                host                local
+d1ed7d99f26f        none                null                local
+1c73f2916e47        w1-db-net           bridge              local
+567487d8d3d5        w2-db-net           bridge              local
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container run -d --ne
+67b5bcdcc8ea5be6c9f483449820b0364330a31ccca3634ead4665d09a92e495
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container inspect 67b
+            "SecondaryIPAddresses": null,
+            "IPAddress": "",
+                    "IPAddress": "172.18.0.2",
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container run -d --ne
+c1960e1346dacd9fc4ef54216174d1a9b494deeb60e61e1686cea4176797fecb
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container inspect c19
+            "SecondaryIPAddresses": null,
+            "IPAddress": "",
+                    "IPAddress": "172.18.0.50",
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker network create mynet
+110860b799f74650c212c818e8ad0d906ee083694f1a89848b465862c8a18a0c
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker network inspect mynet
+[
+    {
+        "Name": "mynet",
+        "Id": "110860b799f74650c212c818e8ad0d906ee083694f1a89848b465862c8a18a0c"
+        "Created": "2019-08-07T09:17:59.381725876Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.50.0.0/16",
+                    "Gateway": "172.50.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {},
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container ls -a | gre
+CONTAINER ID        IMAGE                        COMMAND                  CREATE                       NAMES
+c1960e1346da        app                          "httpd -D FOREGROUND"    9 minu                       relaxed_taussig
+67b5bcdcc8ea        app                          "httpd -D FOREGROUND"    10 min                       infallible_merkle
+35cc726a04a0        adityaprabhakara/appaug7:8   "docker-entrypoint.s…"   14 min>80/tcp                prod
+9bef1a580963        build-machine                "/sbin/tini -- /usr/…"   3 hour0.0.0:9090->8080/tcp   bm
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container rm -f bm pr
+bm
+prod
+relaxed_taussig
+infallible_merkle
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container run -d app
+8f0071fd11d9f91d4aa41cee5a65f12afefea8bb77927275cdc1ab1406ecf0a7
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container exec -it 8f
+"docker container exec" requires at least 2 arguments.
+See 'docker container exec --help'.
+
+Usage:  docker container exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine> docker container exec -it 8f
+/ # ps
+PID   USER     TIME  COMMAND
+    1 root      0:00 httpd -D FOREGROUND
+    7 apache    0:00 httpd -D FOREGROUND
+    8 apache    0:00 httpd -D FOREGROUND
+    9 apache    0:00 httpd -D FOREGROUND
+   10 apache    0:00 httpd -D FOREGROUND
+   11 apache    0:00 httpd -D FOREGROUND
+   12 root      0:00 sh
+   18 root      0:00 ps
+/ #
+/ #
+/ #
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
+
+/c/Users/Aditya/docker-workshop/aug5/build-machine>
